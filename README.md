@@ -1,43 +1,67 @@
-# Morse
+# Ruby Course
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/morse`. To experiment with that code, run `bin/console` for an interactive prompt.
+If you are not familiar with linters and GitHub Actions, read [root level README](../README.md).
 
-TODO: Delete this and the text above, and describe your gem
+## Set-up Rubocop GitHub Action
 
-## Installation
+[Rubocop](https://www.rubocop.org/) is a Ruby static code analyzer (a.k.a. linter) and code formatter. It will enforce many of the guidelines outlined in the community [Ruby Style Guide](https://rubystyle.guide/).
 
-Add this line to your application's Gemfile:
+This GitHub Action is going to run [Rubocop](https://docs.rubocop.org/en/stable/) to help you find style issues.
 
-```ruby
-gem 'morse'
-```
+Please do the following **steps in this order**:
 
-And then execute:
+1. In the first commit of your feature branch create a `.github/workflows` folder and add a copy of [`.github/workflows/linters.yml`](.github/workflows/linters.yml) to that folder.
+    - **Remember** to use the file linked above
+    - **Remember** that `.github` folder starts with a dot.
+2. **Do not make any changes in config files - they represent style guidelines that you share with your team - which is a group of all Microverse students.**
+    - If you think that change is necessary - open a [Pull Request in this repository](../README.md#contributing) and let your code reviewer know about it.
+3. When you open your first pull request you should see the result of the GitHub Actions:
 
-    $ bundle install
+![gh actions checks](../assets/images/gh-actions-rubocop-linters-checks.png)
 
-Or install it yourself as:
+Click on the `Details` link to see the full output and the errors that need to be fixed:
 
-    $ gem install morse
+![gh actions failing checks](../assets/images/gh-actions-rubocop-failing-checks.png)
 
-## Usage
+## [OPTIONAL]Set-up RSpec GitHub Action
 
-TODO: Write usage instructions here
+You can run your tests with GitHub Actions to ensure that they are passing before merging a PR.
 
-## Development
+To use the GitHub Action to run your tests, please do the following **steps in this order**:
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+1. Add a copy of [`.github/workflows/tests.yml`](.github/workflows/tests.yml) to your `.github/workflows` folder.
+    - **Remember** to use the file linked above
+    - Do not modify or delete the [`.github/workflows/linters.yml`](.github/workflows/linters.yml) file that should already be in that folder.
+    - RSpec by default will try to run any file ending in `_spec.rb` inside the `spec` folder. Make sure to follow this convention for your tests files so `rspec` can run your spec files.
+    - You can modify the [`.github/workflows/tests.yml`](.github/workflows/tests.yml) file to better fit your custom needs.
+3. When you open your pull request you should see the result of the GitHub Action:
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+![gh actions checks](../assets/images/gh-actions-rspec-tests-checks.png)
 
-## Contributing
+Click on the `Details` link of the test action to check the results of your tests.
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/morse. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/morse/blob/develop/CODE_OF_CONDUCT.md).
+## Set-up linters in your local env
 
-## License
+### [RuboCop](https://docs.rubocop.org/en/stable/)
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+1. Add this line to the `Gemfile`
+    ```
+    gem 'rubocop', '>= 1.0', '< 2.0'
+    ```
+    *not sure how to use Gemfile? Read [this](https://bundler.io/v1.15/guides/bundler_setup.html).*
+2. Run `bundle install`.
+3. Copy [.rubocop.yml](./.rubocop.yml) to the root directory of your project
+4. **Do not make any changes in config files - they represent style guidelines that you share with your team - which is a group of all Microverse students.**
+    - If you think that change is necessary - open a [Pull Request in this repository](../README.md#contributing) and let your code reviewer know about it.
+5. Run `rubocop`.
+6. Fix linter errors.
+7. **IMPORTANT NOTE**: feel free to research [auto-correct options for Rubocop](https://rubocop.readthedocs.io/en/latest/auto_correct/) if you get a flood of errors but keep in mind that correcting style errors manually will help you to make a habit of writing a clean code!
 
-## Code of Conduct
+## Troubleshooting
 
-Everyone interacting in the Morse project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/morse/blob/develop/CODE_OF_CONDUCT.md).
+- While using Colorize gem, if you are facing errors with Rspec related to 
+    ```bash
+    LoadError:
+    cannot load such file -- colorize
+    ```
+    please remove ```--deployment``` from line no. [26](https://github.com/shubham14p3/Ruby-capstone-project/blob/ca86784cc88bea7c933e329c0953f07e21bcf6ca/.github/workflows/tests.yml#L16) of test.yml file.
