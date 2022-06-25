@@ -56,7 +56,7 @@ end
 def decode(sentence)
   result = ''
   sentence.split(/   /).each do |word|
-    result += ' #{decode_word(word)}'
+    result += " #{decode_word(word)}"
   end
   result.strip
 end
